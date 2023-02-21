@@ -40,3 +40,8 @@ func DeleteFilm(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	db.DB.Delete(&Film{}, id)
 }
+
+func UpdateFilm(w http.ResponseWriter, r *http.Request) {
+	DeleteFilm(w, r)
+	CreateFilm(w, r)
+}
