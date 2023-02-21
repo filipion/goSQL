@@ -35,3 +35,8 @@ func CreateFilm(w http.ResponseWriter, r *http.Request) {
 	render.Status(r, http.StatusCreated)
 	render.Render(w, r, NewFilmResponse(film))
 }
+
+func DeleteFilm(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	db.DB.Delete(&Film{}, id)
+}

@@ -7,6 +7,7 @@ func Router() chi.Router {
 
 	router.Get("/", ListFilms)
 	router.Get("/{id}", ListFilm)
+	router.Delete("/{id}", DeleteFilm)
 	router.Post("/", CreateFilm)
 
 	return router

@@ -10,10 +10,10 @@ import (
 type Film struct {
 	FilmId             int    `gorm:"type:smallint;primaryKey"`
 	Title              string `gorm:"type:varchar(128)"`
-	LanguageId         int    `gorm:"type:tinyint;foreignKey"`
-	Description        string
-	ReleaseYear        string
-	OriginalLanguageId int `gorm:"type:tinyint;foreignKey"`
+	LanguageId         int    `gorm:"type:tinyint"`
+	Description        string `gorm:"type:longtext"`
+	ReleaseYear        string `gorm:"type:longtext"`
+	OriginalLanguageId int    `gorm:"type:tinyint"`
 	RentalDuration     int
 	RentalRate         float64
 	Length             int
