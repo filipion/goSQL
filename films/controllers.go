@@ -36,6 +36,15 @@ func CreateFilm(w http.ResponseWriter, r *http.Request) {
 
 	film := data.Film
 
+	id := film.FilmId
+
+	var existingFilm Film
+	db.DB.First(&existingFilm, id)
+	if existingFilm.FilmId != 0 {
+		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("Film with the specified id already axists")))
+		return
+	}
+
 	db.DB.Create(film)
 
 	render.Status(r, http.StatusCreated)
