@@ -1,10 +1,11 @@
 package films
 
 import (
+	"errors"
 	"net/http"
 
 	"example.com/gosql/db"
-	"example.com/gosql/errors"
+	"example.com/gosql/myerrors"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 )
@@ -19,13 +20,18 @@ func ListFilm(w http.ResponseWriter, r *http.Request) {
 	var film *Film
 	id := chi.URLParam(r, "id")
 	db.DB.First(&film, id)
+
+	if film.FilmId == 0 {
+		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("Film with the id doesn't exist.")))
+	}
+
 	render.Render(w, r, NewFilmResponse(film))
 }
 
 func CreateFilm(w http.ResponseWriter, r *http.Request) {
 	var data FilmRequest
 	if err := render.Bind(r, &data); err != nil {
-		render.Render(w, r, errors.ErrInvalidRequest(err))
+		render.Render(w, r, myerrors.ErrInvalidRequest(err))
 	}
 
 	film := data.Film

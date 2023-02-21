@@ -27,7 +27,7 @@ func Init() {
 
 	log.Printf("Server starting at http://localhost:%s\n", port)
 
-	err := http.ListenAndServe(":"+port, router)
+	err := http.ListenAndServe("localhost:"+port, router)
 
 	log.Fatal(err)
 }
