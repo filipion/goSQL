@@ -22,10 +22,10 @@ func ListFilm(w http.ResponseWriter, r *http.Request) {
 	db.DB.First(&film, id)
 
 	if film.FilmId == 0 {
-		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("Film with the id doesn't exist.")))
+		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("Film with the specified id doesn't exist")))
+	} else {
+		render.Render(w, r, NewFilmResponse(film))
 	}
-
-	render.Render(w, r, NewFilmResponse(film))
 }
 
 func CreateFilm(w http.ResponseWriter, r *http.Request) {
