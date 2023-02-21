@@ -2,6 +2,7 @@ package films
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"example.com/gosql/db"
@@ -11,8 +12,9 @@ import (
 )
 
 func ListFilms(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query().Get("q")
 	var films []*Film
-	db.DB.Find(&films)
+	db.DB.Where("title LIKE ?", fmt.Sprintf("%%%s%%", query)).Find(&films)
 	render.RenderList(w, r, NewFilmListResponse(films))
 }
 
@@ -33,9 +35,7 @@ func CreateFilm(w http.ResponseWriter, r *http.Request) {
 	if err := render.Bind(r, &data); err != nil {
 		render.Render(w, r, myerrors.ErrInvalidRequest(err))
 	}
-
 	film := data.Film
-
 	id := film.FilmId
 
 	var existingFilm Film
@@ -46,7 +46,6 @@ func CreateFilm(w http.ResponseWriter, r *http.Request) {
 	}
 
 	db.DB.Create(film)
-
 	render.Status(r, http.StatusCreated)
 	render.Render(w, r, NewFilmResponse(film))
 }
