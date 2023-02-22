@@ -1,4 +1,4 @@
-package films
+package models
 
 import (
 	"errors"
@@ -22,6 +22,7 @@ type Film struct {
 	Rating             string
 	SpecialFeatures    string
 	LastUpdate         time.Time `gorm:"autoCreateTime"`
+	Actors             []*Actor  `gorm:"many2many:film_actor"`
 }
 
 func (Film) TableName() string {

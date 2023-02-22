@@ -1,4 +1,4 @@
-package films
+package models
 
 import (
 	"errors"

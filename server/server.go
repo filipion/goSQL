@@ -5,16 +5,15 @@ import (
 	"net/http"
 	"os"
 
-	"example.com/gosql/actors"
-	"example.com/gosql/films"
+	"example.com/gosql/models"
 	"github.com/go-chi/chi/v5"
 )
 
 func Router() chi.Router {
 	router := chi.NewRouter()
 
-	router.Mount("/films", films.Router())
-	router.Mount("/actors", actors.Router())
+	router.Mount("/films", models.FilmsRouter())
+	router.Mount("/actors", models.ActorsRouter())
 
 	return router
 }

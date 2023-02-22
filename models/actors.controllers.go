@@ -1,4 +1,4 @@
-package actors
+package models
 
 import (
 	"errors"

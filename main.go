@@ -2,13 +2,13 @@ package main
 
 import (
 	"example.com/gosql/db"
-	"example.com/gosql/films"
+	"example.com/gosql/models"
 	"example.com/gosql/server"
 )
 
 func main() {
 	db.Init()
-	db.DB.AutoMigrate(&films.Film{})
+	db.DB.AutoMigrate(&models.Film{})
 
 	server.Init()
 }

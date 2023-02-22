@@ -1,4 +1,4 @@
-package actors
+package models
 
 import (
 	"errors"
@@ -13,6 +13,7 @@ type Actor struct {
 	FirstName  string    `gorm:"type:varchar(45)"`
 	LastName   string    `gorm:"type:varchar(45)"`
 	LastUpdate time.Time `gorm:"autoCreateTime"`
+	Films      []*Film   `gorm:"many2many:film_actor"`
 }
 
 func (Actor) TableName() string {
