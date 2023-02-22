@@ -12,7 +12,7 @@ var DB *gorm.DB
 
 func Init() {
 	db, err := gorm.Open(
-		mysql.Open(fmt.Sprintf("root:%s@tcp(localhost:3306)/sakila", creds.SQLroot)),
+		mysql.Open(fmt.Sprintf("root:%s@tcp(localhost:3306)/sakila?parseTime=true", creds.SQLroot)),
 		&gorm.Config{},
 	)
 

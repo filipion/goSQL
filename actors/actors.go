@@ -3,15 +3,16 @@ package actors
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/render"
 )
 
 type Actor struct {
-	ActorId    int    `gorm:"type:smallint;primaryKey"`
-	FirstName  string `gorm:"type:varchar(45)"`
-	LastName   string `gorm:"type:varchar(45)"`
-	LastUpdate string
+	ActorId    int       `gorm:"type:smallint;primaryKey"`
+	FirstName  string    `gorm:"type:varchar(45)"`
+	LastName   string    `gorm:"type:varchar(45)"`
+	LastUpdate time.Time `gorm:"autoCreateTime"`
 }
 
 func (Actor) TableName() string {

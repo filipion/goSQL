@@ -3,6 +3,7 @@ package films
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/render"
 )
@@ -20,7 +21,7 @@ type Film struct {
 	ReplacementCost    float64 `gorm:"type:double"`
 	Rating             string
 	SpecialFeatures    string
-	LastUpdate         string
+	LastUpdate         time.Time `gorm:"autoCreateTime"`
 }
 
 func (Film) TableName() string {
