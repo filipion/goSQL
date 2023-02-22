@@ -1,4 +1,4 @@
-package films
+package actors
 
 import (
 	"errors"
@@ -11,51 +11,51 @@ import (
 	"github.com/go-chi/render"
 )
 
-func ListFilms(w http.ResponseWriter, r *http.Request) {
+func ListActors(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query().Get("q")
-	var films []*Film
-	db.DB.Where("title LIKE ?", fmt.Sprintf("%%%s%%", query)).Find(&films)
-	render.RenderList(w, r, NewFilmListResponse(films))
+	var actors []*Actor
+	db.DB.Where("title LIKE ?", fmt.Sprintf("%%%s%%", query)).Find(&actors)
+	render.RenderList(w, r, NewActorListResponse(actors))
 }
 
-func ListFilm(w http.ResponseWriter, r *http.Request) {
-	var film *Film
+func ListActor(w http.ResponseWriter, r *http.Request) {
+	var actor *Actor
 	id := chi.URLParam(r, "id")
-	db.DB.First(&film, id)
+	db.DB.First(&actor, id)
 
-	if film.FilmId == 0 {
-		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("Film with the specified id doesn't exist")))
+	if actor.ActorId == 0 {
+		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("Actor with the specified id doesn't exist")))
 	} else {
-		render.Render(w, r, NewFilmResponse(film))
+		render.Render(w, r, NewActorResponse(actor))
 	}
 }
 
-func CreateFilm(w http.ResponseWriter, r *http.Request) {
-	var data FilmRequest
+func CreateActor(w http.ResponseWriter, r *http.Request) {
+	var data ActorRequest
 	if err := render.Bind(r, &data); err != nil {
 		render.Render(w, r, myerrors.ErrInvalidRequest(err))
 	}
-	film := data.Film
-	id := film.FilmId
+	actor := data.Actor
+	id := actor.ActorId
 
-	var existingFilm Film
-	db.DB.First(&existingFilm, id)
-	if existingFilm.FilmId != 0 {
-		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("Film with the specified id already axists")))
+	var existingActor Actor
+	db.DB.First(&existingActor, id)
+	if existingActor.ActorId != 0 {
+		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("Actor with the specified id already axists")))
 		return
 	}
 
-	db.DB.Create(film)
+	db.DB.Create(actor)
 	render.Status(r, http.StatusCreated)
-	render.Render(w, r, NewFilmResponse(film))
+	render.Render(w, r, NewActorResponse(actor))
 }
 
-func DeleteFilm(w http.ResponseWriter, r *http.Request) {
+func DeleteActor(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	db.DB.Delete(&Film{}, id)
+	db.DB.Delete(&Actor{}, id)
 }
 
-func UpdateFilm(w http.ResponseWriter, r *http.Request) {
-	DeleteFilm(w, r)
-	CreateFilm(w, r)
+func UpdateActor(w http.ResponseWriter, r *http.Request) {
+	DeleteActor(w, r)
+	CreateActor(w, r)
 }
