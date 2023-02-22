@@ -70,7 +70,7 @@ func UpdateActor(w http.ResponseWriter, r *http.Request) {
 	}
 
 	existingActor = *actor
-	db.DB.Save(&existingActor)
+	db.DB.Save([]Actor{existingActor})
 	render.Status(r, http.StatusAccepted)
 	render.Render(w, r, NewActorResponse(actor))
 }

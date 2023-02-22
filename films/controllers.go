@@ -76,7 +76,7 @@ func UpdateFilm(w http.ResponseWriter, r *http.Request) {
 	}
 
 	existingFilm = *film
-	db.DB.Save(&existingFilm)
+	db.DB.Save([]Film{existingFilm})
 	render.Status(r, http.StatusAccepted)
 	render.Render(w, r, NewFilmResponse(film))
 }
