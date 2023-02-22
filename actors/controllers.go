@@ -2,7 +2,6 @@ package actors
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 
 	"example.com/gosql/db"
@@ -12,9 +11,7 @@ import (
 )
 
 func ListActors(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query().Get("q")
 	var actors []*Actor
-	db.DB.Where("title LIKE ?", fmt.Sprintf("%%%s%%", query)).Find(&actors)
 	render.RenderList(w, r, NewActorListResponse(actors))
 }
 
