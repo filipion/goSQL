@@ -74,9 +74,9 @@ func UpdateFilm(w http.ResponseWriter, r *http.Request) {
 		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("cannot update nonexistent movie")))
 		return
 	}
+
 	existingFilm = *film
 	db.DB.Save(&existingFilm)
-
 	render.Status(r, http.StatusAccepted)
 	render.Render(w, r, NewFilmResponse(film))
 }
