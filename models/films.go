@@ -21,7 +21,7 @@ type Film struct {
 	ReplacementCost    float64 `gorm:"type:double"`
 	Rating             string
 	SpecialFeatures    string
-	LastUpdate         time.Time `gorm:"autoCreateTime"`
+	LastUpdate         time.Time `gorm:"autoUpdateTime"`
 	Actors             []*Actor  `gorm:"many2many:film_actor"`
 }
 

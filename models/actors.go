@@ -12,7 +12,8 @@ type Actor struct {
 	ActorId    int       `gorm:"type:smallint;primaryKey"`
 	FirstName  string    `gorm:"type:varchar(45)"`
 	LastName   string    `gorm:"type:varchar(45)"`
-	LastUpdate time.Time `gorm:"autoCreateTime"`
+	LastUpdate time.Time `gorm:"autoUpdateTime"`
+	CreatedAt  time.Time `gorm:"autoCreateTime"`
 	Films      []*Film   `gorm:"many2many:film_actor"`
 }
 
