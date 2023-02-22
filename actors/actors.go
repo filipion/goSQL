@@ -1,4 +1,4 @@
-package films
+package actors
 
 import (
 	"errors"
@@ -7,8 +7,8 @@ import (
 	"github.com/go-chi/render"
 )
 
-type Film struct {
-	FilmId             int    `gorm:"type:smallint;primaryKey"`
+type Actor struct {
+	ActorId            int    `gorm:"type:smallint;primaryKey"`
 	Title              string `gorm:"type:varchar(128)"`
 	LanguageId         int    `gorm:"type:tinyint"`
 	Description        string `gorm:"type:longtext"`
@@ -23,37 +23,37 @@ type Film struct {
 	LastUpdate         string
 }
 
-func (Film) TableName() string {
-	return "film"
+func (Actor) TableName() string {
+	return "actor"
 }
 
-type FilmRequest struct {
-	*Film
+type ActorRequest struct {
+	*Actor
 }
 
-func (f *FilmRequest) Bind(r *http.Request) error {
-	if f.Film == nil {
-		return errors.New("missing required Film fields")
+func (f *ActorRequest) Bind(r *http.Request) error {
+	if f.Actor == nil {
+		return errors.New("missing required Actor fields")
 	}
 	return nil
 }
 
-type FilmResponse struct {
-	*Film
+type ActorResponse struct {
+	*Actor
 }
 
-func NewFilmResponse(film *Film) *FilmResponse {
-	return &FilmResponse{film}
+func NewActorResponse(actor *Actor) *ActorResponse {
+	return &ActorResponse{actor}
 }
 
-func NewFilmListResponse(films []*Film) []render.Renderer {
+func NewActorListResponse(actors []*Actor) []render.Renderer {
 	list := []render.Renderer{}
-	for _, film := range films {
-		list = append(list, NewFilmResponse(film))
+	for _, actor := range actors {
+		list = append(list, NewActorResponse(actor))
 	}
 	return list
 }
 
-func (f *FilmResponse) Render(w http.ResponseWriter, r *http.Request) error {
+func (f *ActorResponse) Render(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
