@@ -53,6 +53,24 @@ func DeleteActor(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateActor(w http.ResponseWriter, r *http.Request) {
-	DeleteActor(w, r)
-	CreateActor(w, r)
+	//Read the data from the request
+	var data ActorRequest
+	if err := render.Bind(r, &data); err != nil {
+		render.Render(w, r, myerrors.ErrInvalidRequest(err))
+	}
+	actor := data.Actor
+	id := chi.URLParam(r, "id")
+
+	var existingActor Actor
+	db.DB.First(&existingActor, id)
+	if existingActor.ActorId == 0 {
+		render.Status(r, http.StatusForbidden)
+		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("cannot update nonexistent movie")))
+		return
+	}
+
+	existingActor = *actor
+	db.DB.Save(&existingActor)
+	render.Status(r, http.StatusAccepted)
+	render.Render(w, r, NewActorResponse(actor))
 }
