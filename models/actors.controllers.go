@@ -12,6 +12,7 @@ import (
 
 func ListActors(w http.ResponseWriter, r *http.Request) {
 	var actors []*Actor
+	db.DB.Preload("Films").Find(&actors)
 	render.RenderList(w, r, NewActorListResponse(actors))
 }
 
@@ -25,6 +26,7 @@ func ListActor(w http.ResponseWriter, r *http.Request) {
 	} else {
 		render.Render(w, r, NewActorResponse(actor))
 	}
+
 }
 
 func CreateActor(w http.ResponseWriter, r *http.Request) {

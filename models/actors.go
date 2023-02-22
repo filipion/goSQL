@@ -14,7 +14,7 @@ type Actor struct {
 	LastName   string    `gorm:"type:varchar(45)"`
 	LastUpdate time.Time `gorm:"autoUpdateTime"`
 	CreatedAt  time.Time `gorm:"autoCreateTime"`
-	Films      []*Film   `gorm:"many2many:film_actor"`
+	Films      []*Film   `gorm:"many2many:film_actor;joinForeignKey:ActorId;joinReferences:FilmId"`
 }
 
 func (Actor) TableName() string {
