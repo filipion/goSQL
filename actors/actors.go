@@ -8,19 +8,10 @@ import (
 )
 
 type Actor struct {
-	ActorId            int    `gorm:"type:smallint;primaryKey"`
-	Title              string `gorm:"type:varchar(128)"`
-	LanguageId         int    `gorm:"type:tinyint"`
-	Description        string `gorm:"type:longtext"`
-	ReleaseYear        string `gorm:"type:longtext"`
-	OriginalLanguageId int    `gorm:"type:tinyint"`
-	RentalDuration     int
-	RentalRate         float64
-	Length             int
-	ReplacementCost    float64 `gorm:"type:double"`
-	Rating             string
-	SpecialFeatures    string
-	LastUpdate         string
+	ActorId    int    `gorm:"type:smallint;primaryKey"`
+	FirstName  string `gorm:"type:varchar(45)"`
+	LastName   string `gorm:"type:varchar(45)"`
+	LastUpdate string
 }
 
 func (Actor) TableName() string {
