@@ -31,6 +31,7 @@ func ListFilm(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateFilm(w http.ResponseWriter, r *http.Request) {
+	//Read the data from the request
 	var data FilmRequest
 	if err := render.Bind(r, &data); err != nil {
 		render.Render(w, r, myerrors.ErrInvalidRequest(err))
@@ -41,10 +42,12 @@ func CreateFilm(w http.ResponseWriter, r *http.Request) {
 	var existingFilm Film
 	db.DB.First(&existingFilm, id)
 	if existingFilm.FilmId != 0 {
+		render.Status(r, http.StatusForbidden)
 		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("Film with the specified id already axists")))
 		return
 	}
 
+	//Will assign a FilmId if it is 0
 	db.DB.Create(film)
 	render.Status(r, http.StatusCreated)
 	render.Render(w, r, NewFilmResponse(film))
@@ -56,6 +59,24 @@ func DeleteFilm(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateFilm(w http.ResponseWriter, r *http.Request) {
-	DeleteFilm(w, r)
-	CreateFilm(w, r)
+	//Read the data from the request
+	var data FilmRequest
+	if err := render.Bind(r, &data); err != nil {
+		render.Render(w, r, myerrors.ErrInvalidRequest(err))
+	}
+	film := data.Film
+	id := chi.URLParam(r, "id")
+
+	var existingFilm Film
+	db.DB.First(&existingFilm, id)
+	if existingFilm.FilmId == 0 {
+		render.Status(r, http.StatusForbidden)
+		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("cannot update nonexistent movie")))
+		return
+	}
+	existingFilm = *film
+	db.DB.Save(&existingFilm)
+
+	render.Status(r, http.StatusAccepted)
+	render.Render(w, r, NewFilmResponse(film))
 }
