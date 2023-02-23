@@ -41,7 +41,7 @@ func CreateActor(w http.ResponseWriter, r *http.Request) {
 	var existingActor Actor
 	db.DB.First(&existingActor, id)
 	if existingActor.ActorId != 0 {
-		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("Actor with the specified id already axists")))
+		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("Actor with the specified id already exists")))
 		return
 	}
 
@@ -52,6 +52,15 @@ func CreateActor(w http.ResponseWriter, r *http.Request) {
 
 func DeleteActor(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
+
+	var actor Actor
+	db.DB.First(&actor, id)
+	if actor.ActorId == 0 {
+		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("cannot delete. Actor not found")))
+		return
+	}
+
+	db.DB.Model(&actor).Association("Films").Clear()
 	db.DB.Delete(&Actor{}, id)
 }
 
