@@ -19,11 +19,12 @@ func ListActors(w http.ResponseWriter, r *http.Request) {
 func ListActor(w http.ResponseWriter, r *http.Request) {
 	var actor *Actor
 	id := chi.URLParam(r, "id")
-	db.DB.First(&actor, id)
+	db.DB.Preload("Films").First(&actor, id)
 
 	if actor.ActorId == 0 {
 		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("Actor with the specified id doesn't exist")))
 	} else {
+		db.DB.Model(&actor).Association("Films").Count()
 		render.Render(w, r, NewActorResponse(actor))
 	}
 
@@ -64,7 +65,7 @@ func UpdateActor(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
 	var existingActor Actor
-	db.DB.First(&existingActor, id)
+	db.DB.Preload("Films").First(&existingActor, id)
 	if existingActor.ActorId == 0 {
 		render.Status(r, http.StatusForbidden)
 		render.Render(w, r, myerrors.ErrInvalidRequest(errors.New("cannot update nonexistent movie")))

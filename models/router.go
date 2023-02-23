@@ -9,7 +9,7 @@ func FilmsRouter() chi.Router {
 	router.Post("/", CreateFilm)
 
 	router.Delete("/{id}", DeleteFilm)
-	router.Put("/{id}", UpdateFilm)
+	router.Patch("/{id}", UpdateFilm)
 
 	return router
 }
@@ -21,7 +21,7 @@ func ActorsRouter() chi.Router {
 	router.Post("/", CreateActor)
 
 	router.Delete("/{id}", DeleteActor)
-	router.Put("/{id}", UpdateActor)
+	router.Patch("/{id}", UpdateActor)
 
 	return router
 }
