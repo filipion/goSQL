@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"example.com/gosql/db"
@@ -11,6 +12,7 @@ import (
 )
 
 func ListActors(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Serving a request...")
 	var actors []*Actor
 	db.DB.Preload("Films").Find(&actors)
 	render.RenderList(w, r, NewActorListResponse(actors))
