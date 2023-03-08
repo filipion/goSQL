@@ -26,9 +26,9 @@ func Init() {
 
 	router := Router()
 
-	log.Printf("Server starting at http://localhost:%s\n", port)
+	log.Printf("Server starting at http://10.0.0.4:%s\n", port)
 
-	err := http.ListenAndServe("localhost:"+port, router)
+	err := http.ListenAndServe("0.0.0.0:"+port, router)
 
 	log.Fatal(err)
 }
